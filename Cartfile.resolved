@@ -1,0 +1,4 @@
+github "ReactiveX/RxSwift" "2.3.1"
+github "typelift/Swiftz" "v0.5.0"
+github "DanielAsher/XCGLogger" "c77b904fe0b22f82993cb98e8dfed00bf32ad4c7"
+github "realm/realm-cocoa" "v0.98.0"
