@@ -19,6 +19,7 @@ print(b)
 let c = [1, 2, 3, 4, 5, 6]
     .map{ $0 * 5 }
 print(c)
+print("today")
 
 let d = [1, 2, 3, 4, 5, 6]
     .reduce(0, combine: +)

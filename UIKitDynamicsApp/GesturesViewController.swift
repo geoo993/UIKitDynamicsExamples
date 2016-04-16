@@ -193,6 +193,32 @@ class GesturesViewController: UIViewController {
 //        
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        guard let theTouch = touches.first! as? UITouch else {return}
+        let location = theTouch.locationInView(self.view)
+        
+        let touchCount = touches.count
+        let tapCount = theTouch.tapCount
+        
+//        // find a object at the tap location
+//        self.wordsLabels.forEach { w in 
+//            
+//            // Convert the location of the obstacle view to this view controller's view coordinate system
+//            let objectTouch = self.view.convertRect(w.frame, fromView: w.superview)
+//            
+//            // Check if the touch is inside the obstacle view
+//            if CGRectContainsPoint(objectTouch, location) {
+//                
+//                
+//                print("object", objectTouch)
+//            }
+//            
+//        }
+        
+        
+        
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
