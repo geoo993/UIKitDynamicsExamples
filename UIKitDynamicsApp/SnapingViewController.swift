@@ -220,7 +220,7 @@ class SnapingViewController: UIViewController,UICollisionBehaviorDelegate {
         
     }
     
- 
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)

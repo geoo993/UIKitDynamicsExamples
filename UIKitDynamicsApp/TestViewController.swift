@@ -28,9 +28,7 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
     var firstContact = false
     
     var cannonSubscription : Disposable?
-    
-    //func viewWillD
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -83,7 +81,7 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
          
         }
         
-        //cannonSubscription?.dispose()
+        
         
           
       
@@ -118,6 +116,14 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
         
     }
    
+    override func viewDidDisappear(animated: Bool)  {
+        super.viewDidDisappear(animated)
+        // NSLog("Stopping gravity")
+        // motionManager.stopDeviceMotionUpdates()
+        
+        print("disappeared")
+        cannonSubscription?.dispose()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
