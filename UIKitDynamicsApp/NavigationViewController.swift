@@ -25,4 +25,17 @@ class NavigationViewController: UINavigationController {
         return false
     }
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [UIInterfaceOrientationMask.Portrait,UIInterfaceOrientationMask.PortraitUpsideDown]
+    }
+    
+    override func preferredInterfaceOrientationForPresentation() -> UIInterfaceOrientation {
+        return .Portrait
+    }
+    
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
 }

@@ -17,7 +17,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
    // @IBOutlet var tableView: UITableView!
     
-    var items: [String] = ["Push Behavior test", "Snapping", "Phonemes","Main Gestures"]
+    var items: [String] = ["Push Behavior", "Snap Behavior", "Phonemes","Phonemes in TextView", "Main Gestures"]
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -85,10 +85,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     }
                 //print("two")
                 case 3:
+                    if let phoTextView = self.storyboard?.instantiateViewControllerWithIdentifier("TextviewViewController") {
+                        self.navigationController?.pushViewController(phoTextView, animated: true)
+                    }
+                // print("three")
+                case 4:
+                    
                     if let mainGesture = self.storyboard?.instantiateViewControllerWithIdentifier("GesturesViewController") {
                         self.navigationController?.pushViewController(mainGesture, animated: true)
                     }
-                // print("three")
+                // print("four")
                     
                 default:
                 print("Integer out of range")

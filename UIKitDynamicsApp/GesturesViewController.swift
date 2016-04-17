@@ -49,6 +49,7 @@ class GesturesViewController: UIViewController {
         let tapB = UIButton(frame: CGRect(x: frameMidX-(boxWidth/2), y: frameMidY-(100), width: boxWidth, height: boxHeight))
         tapB.setTitle("TAP", forState: UIControlState.Normal)
         tapB.backgroundColor = UIColor.randomColor()
+        tapB.bringSubviewToFront(self.view)
         self.view.addSubview(tapB)
         let tap = UITapGestureRecognizer(target: self, action: #selector(GesturesViewController.onTap(_:)))
         tapB.addGestureRecognizer(tap)
@@ -57,7 +58,7 @@ class GesturesViewController: UIViewController {
         let panB = UIButton(frame: CGRect(x: frameMidX-(boxWidth/2), y: frameMidY+(25), width: boxWidth, height: boxHeight))
         panB.setTitle("PAN", forState: UIControlState.Normal)
         panB.backgroundColor = UIColor.randomColor()
-        self.view.addSubview(panB)
+        //self.view.addSubview(panB)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(GesturesViewController.onPan(_:)))
         panB.addGestureRecognizer(pan)
         panB.userInteractionEnabled  = true
@@ -67,13 +68,13 @@ class GesturesViewController: UIViewController {
         longPressB.setTitle("LONG PRESS", forState: UIControlState.Normal)
         longPressB.backgroundColor = UIColor.randomColor()
         self.view.addSubview(longPressB)
+        self.view.addSubview(panB)
         
 //        let longPressGesture = UILongPressGestureRecognizer()
 //        longPressGesture.minimumPressDuration = 1.0
 //        longPressGesture.addTarget(self, action: #selector(GesturesViewController.longPressedView))
 //        longPressB.addGestureRecognizer(longPressGesture)
 //        longPressB.userInteractionEnabled = true
-        
         
         let longPressGesture = UILongPressGestureRecognizer()
         longPressGesture.minimumPressDuration = 1.0

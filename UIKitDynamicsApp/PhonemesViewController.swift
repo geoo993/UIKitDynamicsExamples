@@ -22,7 +22,7 @@ class PhonemesViewController: UIViewController {
     var snapBehavior: UISnapBehavior!
     
     
-    let startX : CGFloat = 40
+    let startX : CGFloat = 10
     let startY : CGFloat = 200
     let width : CGFloat = 300
     let phonemesHeight : CGFloat = 40
@@ -156,9 +156,10 @@ class PhonemesViewController: UIViewController {
                         .flatMap { gesture -> Observable<Int64> in
                             // say phoneme
                             //let utt = AVSpeechUtterance(string: self.phonemesLabels[0].text!)
+                            
                             // say word
-                           // let utt = AVSpeechUtterance(string: w.text!)
-                            //self.speech.speakUtterance(utt)
+                            let utt = AVSpeechUtterance(string: w.text!)
+                            self.speech.speakUtterance(utt)
                         
                             return Observable<Int64>.timer(3, scheduler: MainScheduler.instance)
                                                     
