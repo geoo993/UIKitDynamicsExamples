@@ -10,23 +10,26 @@ let vc = UIViewController()
 
 let disposeBag = DisposeBag()
 
-let textView = UITextView(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+let textView = UITextView(frame: CGRect(x: 50, y: 200, width: 300, height: 50))
 
-let str = "Hello George"
+let str = "Hi George, Welcome Home"
 textView.text = str
-textView.font = textView.font?.fontWithSize(30)
+textView.font = textView.font?.fontWithSize(22)
 textView.editable = false
 vc.view.addSubview(textView)
+
 
 let longPressGesture = UILongPressGestureRecognizer()
 longPressGesture.minimumPressDuration = 0.0
 longPressGesture.rx_event
     .subscribeNext { tap in 
         
-        let location = tap.locationInView(vc.view)
-        //let button = tap.view as! UIButton 
+        let location = tap.locationInView(textView)
+        //let text = tap.view as? UITextView
+            
         switch tap.state {
         case .Began: 
+            
             
             textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: textView.textContainer)
             
@@ -38,7 +41,7 @@ longPressGesture.rx_event
             print(str.characters[charIdx])
 
             
-            print("began",location)
+            //print("began",location)
         case .Changed: 
             print("changed",location)
         case .Ended: 
@@ -47,7 +50,9 @@ longPressGesture.rx_event
             print("tapp ")
         }
     }.addDisposableTo(disposeBag)
-vc.view.addGestureRecognizer(longPressGesture)
+textView.addGestureRecognizer(longPressGesture)
+
+
 
 textView.tokenizer
 
