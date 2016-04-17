@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vEY-HU-are">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="QPN-Or-M0P">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -40,6 +40,39 @@
             </objects>
             <point key="canvasLocation" x="424" y="1076"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="3zg-QZ-fw1">
+            <objects>
+                <viewController id="mne-00-tV6" customClass="ViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="82p-6a-TRL"/>
+                        <viewControllerLayoutGuide type="bottom" id="LWS-6c-aI5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="z9C-RM-3tZ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ICl-CL-CnI">
+                                <rect key="frame" x="0.0" y="100" width="480" height="480"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="mne-00-tV6" id="RKT-Qr-yJA"/>
+                                    <outlet property="delegate" destination="mne-00-tV6" id="sTK-8z-Two"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="jNb-oU-T16"/>
+                    <connections>
+                        <outlet property="tableView" destination="ICl-CL-CnI" id="Nas-a3-sVs"/>
+                        <outlet property="view" destination="ICl-CL-CnI" id="gAn-WS-orP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bq3-0C-LR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1260" y="1841"/>
+        </scene>
         <!--Gestures View Controller-->
         <scene sceneID="Eje-38-snB">
             <objects>
@@ -58,10 +91,10 @@
             </objects>
             <point key="canvasLocation" x="1200" y="1079"/>
         </scene>
-        <!--GameView Controller-->
+        <!--Snapping View Controller-->
         <scene sceneID="zWU-wV-3Rs">
             <objects>
-                <viewController storyboardIdentifier="GameViewContoller" id="4zl-UP-5Pu" userLabel="GameView Controller" customClass="GameViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SnapingViewController" id="4zl-UP-5Pu" userLabel="Snapping View Controller" customClass="SnapingViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cVc-9H-SWc"/>
                         <viewControllerLayoutGuide type="bottom" id="ymw-ME-3hk"/>
@@ -75,6 +108,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RMc-kS-ueJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1126" y="293"/>
+        </scene>
+        <!--Navigation View Controller-->
+        <scene sceneID="ovI-sB-7jK">
+            <objects>
+                <navigationController storyboardIdentifier="NavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="QPN-Or-M0P" customClass="NavigationViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rr5-YY-1CK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mne-00-tV6" kind="relationship" relationship="rootViewController" id="eTa-HV-ZUo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Olv-4Y-hID" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="424" y="1809"/>
         </scene>
     </scenes>
 </document>

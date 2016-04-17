@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import CoreMotion
 
-class GameViewController: UIViewController,UICollisionBehaviorDelegate {
+class SnapingViewController: UIViewController,UICollisionBehaviorDelegate {
 
     var disposeBag = DisposeBag()
     
@@ -138,7 +138,6 @@ class GameViewController: UIViewController,UICollisionBehaviorDelegate {
       
 //        let tapLeft = UITapGestureRecognizer()
 //        let tapRight = UITapGestureRecognizer()
-        
 //        Observable.combineLatest(tapLeft.rx_event, tapRight.rx_event) { ($0, $1) }  
         
         

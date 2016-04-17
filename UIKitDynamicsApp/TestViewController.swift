@@ -27,6 +27,10 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
     var outline : UIView!
     var firstContact = false
     
+    var cannonSubscription : Disposable?
+    
+    //func viewWillD
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +39,8 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
         let timePeriod : RxTimeInterval = 1
         
         let cannonTimer : Observable<Int64>= Observable<Int64>.timer(time, period: timePeriod,scheduler: MainScheduler.instance)
-        let cannonSubscription : Disposable?
+        
+        
        
         cannonSubscription = cannonTimer.subscribeNext { tick in 
             //print(tick)
@@ -46,7 +51,7 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
             self.view.addSubview(b)
             self.arrB.append(b)
             
-            print(self.arrB.count)
+            //print(self.arrB.count)
             self.animator = UIDynamicAnimator(referenceView: self.view)
            
             let vx = CGFloat.random(-4, max: 4)
@@ -74,88 +79,46 @@ class TestViewController: UIViewController, UICollisionBehaviorDelegate {
                 self.collision.translatesReferenceBoundsIntoBoundary = true
                 self.animator.addBehavior(self.collision)
                 
-
             }
-            
-            self.arrB
-                .toObservable()
-                .map{ UIBut in
-             
-//                    if (UIBut.center.y > 600)
-//                    {
-//                        UIBut.removeFromSuperview()
-//                    
-//                    }
-                }
-                .subscribeNext{ UIBut in
-                   // print(UIBut)
-            }
+         
         }
-            //collision.action = {
-                
-    //            if (self.updateCount % 3 == 0) {
-    //                self.outline = UIView(frame: self.obj.bounds)
-    //                self.outline.transform = self.obj.transform
-    //                self.outline.center = self.obj.center
-    //                
-    //                self.outline.alpha = 0.5
-    //               
-    //                self.outline.backgroundColor = UIColor.clearColor()
-    //                self.obj.backgroundColor = UIColor.randomColor()
-    //                self.outline.layer.borderColor = self.obj.layer.presentationLayer()!.backgroundColor
-    //                self.outline.layer.borderWidth = 1.0
-    //                self.view.addSubview(self.outline)
-    //                
-    //            }
-    //            
-    //            self.updateCount += 1
-                
-                //print(self.updateCount % 3)
-                
-                //print("\(NSStringFromCGAffineTransform(self.arrB[i].transform)) \(NSStringFromCGPoint(self.arrB[i].center))")
-            //}
         
-       // }
+        //cannonSubscription?.dispose()
+        
+          
       
-//        obj.rx_tap
-//        .subscribeNext {
-//            self.animator.addBehavior(self.gravity)
-//        }
-//        .addDisposableTo(disposeBag)
-        
-        
-        
-        
-        let pressGesture = UILongPressGestureRecognizer()
-        pressGesture.minimumPressDuration = 0.0
-      
-        pressGesture.rx_event.subscribeNext { gesture in
-            
-            let point = gesture.locationInView(pressGesture.view)
- 
-            switch gesture.state {
-            case .Began: 
- 
-            print("Began", point)
-            case .Changed: 
-                
-            print("Changed",point)
-            case .Ended: 
-                
-                
-                
-            print("Ended", point) 
-            default:
-                print(gesture)
-            }
-        }.addDisposableTo(disposeBag)
-        
-        self.view?.addGestureRecognizer(pressGesture)
+//
+//        let longPressGesture = UILongPressGestureRecognizer()
+//        longPressGesture.minimumPressDuration = 0.0
+//      
+//        longPressGesture.rx_event.subscribeNext { gesture in
+//            
+//            let point = gesture.locationInView(longPressGesture.view)
+// 
+//            switch gesture.state {
+//            case .Began: 
+// 
+//            print("Began", point)
+//            case .Changed: 
+//                
+//            print("Changed",point)
+//            case .Ended: 
+//                
+//                
+//                
+//            print("Ended", point) 
+//            default:
+//                print(gesture)
+//            }
+//        }.addDisposableTo(disposeBag)
+//        
+//        self.view?.addGestureRecognizer(longPressGesture)
 
         
         
     }
    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

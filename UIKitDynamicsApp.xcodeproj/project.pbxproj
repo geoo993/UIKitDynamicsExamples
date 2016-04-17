@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C705679A1CBE208C00E64C89 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70567991CBE208C00E64C89 /* GameViewController.swift */; };
+		C705679A1CBE208C00E64C89 /* SnapingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70567991CBE208C00E64C89 /* SnapingViewController.swift */; };
 		C70567AC1CBE696E00E64C89 /* AnimationsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70567AB1CBE696E00E64C89 /* AnimationsSettings.swift */; };
 		C70567BA1CBE6B7300E64C89 /* WordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70567B91CBE6B7300E64C89 /* WordModel.swift */; };
 		C70567CD1CBEF75400E64C89 /* PhonemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70567CC1CBEF75400E64C89 /* PhonemesViewController.swift */; };
@@ -228,7 +228,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C70567991CBE208C00E64C89 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		C70567991CBE208C00E64C89 /* SnapingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapingViewController.swift; sourceTree = "<group>"; };
 		C70567AB1CBE696E00E64C89 /* AnimationsSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationsSettings.swift; sourceTree = "<group>"; };
 		C70567B91CBE6B7300E64C89 /* WordModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordModel.swift; sourceTree = "<group>"; };
 		C70567CC1CBEF75400E64C89 /* PhonemesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonemesViewController.swift; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				C71F7D7C1CB80BAF009211CC /* TestViewController.swift */,
-				C70567991CBE208C00E64C89 /* GameViewController.swift */,
+				C70567991CBE208C00E64C89 /* SnapingViewController.swift */,
 				C70567CC1CBEF75400E64C89 /* PhonemesViewController.swift */,
 				C78C5D021CBFB54200DC359C /* GesturesViewController.swift */,
 				C72BC1191CC118890012BDFC /* NavigationViewController.swift */,
@@ -719,7 +719,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C705679A1CBE208C00E64C89 /* GameViewController.swift in Sources */,
+				C705679A1CBE208C00E64C89 /* SnapingViewController.swift in Sources */,
 				C70567AC1CBE696E00E64C89 /* AnimationsSettings.swift in Sources */,
 				C709FB381CBCD49D00417B12 /* UIKit+Ext.swift in Sources */,
 				C71F7D7D1CB80BAF009211CC /* TestViewController.swift in Sources */,

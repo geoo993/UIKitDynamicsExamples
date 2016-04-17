@@ -98,8 +98,6 @@ class GesturesViewController: UIViewController {
                     print(longPressGesture)
                 }
                 
-                
-                
             }.addDisposableTo(disposeBag)
     
         longPressB.addGestureRecognizer(longPressGesture)
