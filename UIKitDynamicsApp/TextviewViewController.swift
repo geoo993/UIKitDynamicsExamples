@@ -20,31 +20,24 @@ class TextviewViewController: UIViewController {
     var lbl = UILabel()
     var shadowLayer: CALayer = CALayer()
     
-    let startX : CGFloat = 10
+    let startX : CGFloat = 40
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("text view")
+        
+       // print("text view")
         self.view.backgroundColor = UIColor.randomColor()
         
-        let textView = UITextView(frame: CGRect(x: startX, y: 200, width: 300, height: 50))
+        let textView = UITextView(frame: CGRect(x: startX, y: 300, width: 300, height: 50))
         let str = "Hi George, Welcome Home"
         textView.text = str
         textView.font = textView.font?.fontWithSize(fontsize)
         textView.editable = false
         self.view.addSubview(textView)
         
-        
-        
-        let t = UITextView(frame: CGRect(x: startX, y: 400, width: 300, height: 50))
-        t.text = str
-        t.font = t.font?.fontWithSize(fontsize)
-        t.editable = false
-        self.view.addSubview(t)
-        
-        
-        
+        textView.layer.addSublayer(self.shadowLayer)
+        //print(str.words())
        
         let longPressGesture = UILongPressGestureRecognizer()
         longPressGesture.minimumPressDuration = 0.0
@@ -52,57 +45,63 @@ class TextviewViewController: UIViewController {
         longPressGesture.rx_event
             .subscribeNext { tap in 
                 
-                let location = tap.locationInView(t)
+                let location = tap.locationInView(textView)
                 //let text = tap.view as? UITextView
                 
                 switch tap.state {
                 case .Began: 
                     
-                    self.searchData(self.words[Int.random(0, max: self.words.count-1)], textview: t)
-                    
-                    ////part 2
-//                    let layoutManager = text!.layoutManager
-//                    
-//                    location.x -= text!.textContainerInset.left
-//                    location.y -= text!.textContainerInset.top
-//                    
-//                    // character index at tap location
-//                    let characterIndex = layoutManager.characterIndexForPoint(location, inTextContainer: text!.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-//                    
-//                    print(characterIndex)
-//                    
-//                     //if index is valid then do something.
-//                    if characterIndex < text!.textStorage.length {
-//                        
-//                        // print the character index
-//                        print("character index: \(characterIndex)")
-//                        
-//                        // print the character at the index
-//                        let myRange = NSRange(location: characterIndex, length: 1)
-//                        let substring = (text!.attributedText.string as NSString).substringWithRange(myRange)
-//                        print("character at index: \(substring)")
-//                        
-//                        // check if the tap location has a certain attribute
-//                        let attributeName = "MyCustomAttributeName"
-//                        let attributeValue = text!.attributedText.attribute(attributeName, atIndex: characterIndex, effectiveRange: nil) as? String
-//                        if let value = attributeValue {
-//                            print("You tapped on \(attributeName) and the value is: \(value)")
-//                        }
-//                        
-//                    }
+                    //self.searchData(self.words[Int.random(0, max: self.words.count-1)], textview: textView)
                     
                     ////part1
-//                    self.textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: self.textView.textContainer)
-//                    
-//                    //let point = CGPoint(x: 60, y: 5)
-//                    
-//                    let idx = self.textView.layoutManager.characterIndexForPoint(location, inTextContainer:  self.textView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-//                    
-//                    let charIdx = str.characters.startIndex.advancedBy(Int(idx))
-//                    print(charIdx, str.characters[charIdx])
-//                    
+                    //textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: textView.textContainer)
+                             
+                    // character index at tap location
+                    //let characterIndex = textView.layoutManager.characterIndexForPoint(location, inTextContainer: textView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+
                     
-                print("began",location)
+                    if let textPosition = textView.closestPositionToPoint(location) {
+                    
+                        if let wordRange = textView.tokenizer.rangeEnclosingPosition(textPosition, withGranularity: UITextGranularity.Word, inDirection: 0) {
+                            
+                            let highlightedText = textView.textInRange(wordRange)
+                            
+                            let rect = textView.firstRectForRange(wordRange)
+                            print("word rect", rect, highlightedText)
+                            
+                            self.searchData(highlightedText!,frame:rect, textview: textView)
+                        
+                        }
+                        
+                    }
+                    
+                    //let charIdx = str.characters.startIndex.advancedBy(characterIndex)
+                    //print(charIdx, str.characters[charIdx])
+                    
+                   
+                    //if index is valid then do something.
+                    //if characterIndex < text!.textStorage.length {
+                        
+                        // do the stuff
+                        
+                        // print the character index
+                        //print("character index: \(characterIndex)")
+                        
+                        // print the character at the index
+                        //let myRange = NSRange(location: characterIndex, length: 1)
+                        //let substring = (text!.attributedText.string as NSString).substringWithRange(myRange)
+                        //print("character at index: \(substring)")
+                        
+                        
+                        //var range : NSRange? = NSMakeRange(0, 1)
+                        //let attributes: [NSObject : AnyObject] = textView.textStorage.attributesAtIndex(characterIndex, effectiveRange: &range!)
+                        //print("object is \(attributes), \(NSStringFromRange(range!))")
+                        
+                        
+                   // }
+                
+                  
+                //print("began",location)
                 case .Changed: 
                     print("changed",location)
                 case .Ended: 
@@ -111,13 +110,13 @@ class TextviewViewController: UIViewController {
                     print("tapp ")
                 }
             }.addDisposableTo(disposeBag)
-        t.addGestureRecognizer(longPressGesture)
+        textView.addGestureRecognizer(longPressGesture)
     }
         
 
 
     
-    func searchData(highlightWord: String, textview: UITextView)
+    func searchData(highlightWord: String, frame: CGRect, textview: UITextView)
     {
         do {
             
@@ -134,9 +133,10 @@ class TextviewViewController: UIViewController {
             
             let matches: [AnyObject] = regex.matchesInString(string, options: [], range: range)
             
-            self.highlightMatches(matches,inTextView: textview)
+            self.highlightMatches(matches,frame:frame,inTextView: textview)
             
         }catch {
+            
             print(error)
             // Handling error
         }
@@ -144,12 +144,8 @@ class TextviewViewController: UIViewController {
        
     }
     
-    func highlightMatches(matches: NSArray,inTextView: UITextView )
+    func highlightMatches(matches: NSArray,frame:CGRect,inTextView: UITextView )
     {
-        
-        //textview.layer.removeFromSuperlayer()
-        //textview.layer.removeAllAnimations()
-        //matches.reverseObjectEnumerator()
         
         let mutableAttributedString: NSMutableAttributedString = inTextView.attributedText.mutableCopy() as! NSMutableAttributedString
         
@@ -159,10 +155,12 @@ class TextviewViewController: UIViewController {
             if obj.isKindOfClass(NSTextCheckingResult.self) {
              
                 let match: NSTextCheckingResult = (obj as? NSTextCheckingResult)!
-                let rect: CGRect = self.frameOfTextRange(match.range, inTextView: inTextView)
+               // let rect: CGRect = self.frameOfTextRange(match.range, inTextView: inTextView)
+                let rect: CGRect = frame
                 
-                /** Shadow */
-                self.shadowLayer.removeFromSuperlayer()
+                /** Add Shadow */
+//                self.shadowLayer.removeFromSuperlayer()
+              
                 self.shadowLayer.frame = CGRectMake(rect.origin.x, rect.origin.y-5, rect.size.width, rect.size.height+10)
                 self.shadowLayer.cornerRadius = 5
                 self.shadowLayer.backgroundColor = UIColor.yellowColor().CGColor
@@ -174,6 +172,7 @@ class TextviewViewController: UIViewController {
                 /** Label */
                 self.lbl.removeFromSuperview()
                 self.lbl = UILabel(frame: CGRectMake(rect.origin.x, rect.origin.y-5, rect.size.width, rect.size.height+10))
+                self.lbl.alpha = 0.1
                 self.lbl.font = UIFont(name: "Helvetica", size: self.fontsize-5)
                 self.lbl.textColor = UIColor.blackColor()
                 self.lbl.text = mutableAttributedString.attributedSubstringFromRange(match.range).string
@@ -181,7 +180,7 @@ class TextviewViewController: UIViewController {
                 self.lbl.textAlignment = NSTextAlignment.Center
                 self.lbl.layer.cornerRadius = 10
                 
-                inTextView.layer.addSublayer(self.shadowLayer)
+//                inTextView.layer.addSublayer(self.shadowLayer)
                 inTextView.addSubview(self.lbl)
             }
 
@@ -202,7 +201,6 @@ class TextviewViewController: UIViewController {
         //Error: Invalid Intializer
         return inTextView.convertRect(rect, fromView: inTextView.textInputView)
         // Error: request for member 'textInputView' in something not a structure or union
-
     
     }
     
@@ -218,3 +216,5 @@ class TextviewViewController: UIViewController {
     
     
 }
+
+
