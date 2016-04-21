@@ -42,7 +42,6 @@ class PhonemesAndDotsViewController: UIViewController {
         
 
         
-        self.animator = UIDynamicAnimator(referenceView:self.view);
         // print("text view")
         self.view.backgroundColor = UIColor.randomColor()
         
@@ -54,6 +53,7 @@ class PhonemesAndDotsViewController: UIViewController {
         self.view.addSubview(textView)
         textView.layer.addSublayer(self.shadowLayer)
      
+        self.animator = UIDynamicAnimator(referenceView:textView)
         
         
         let longPressGesture = UILongPressGestureRecognizer()
@@ -82,6 +82,7 @@ class PhonemesAndDotsViewController: UIViewController {
                         pho.removeFromSuperview()
                     })
                     
+                    let phonemesColor = UIColor.randomColor()
                     let wordModel = WordModel()
                     wordModel.getPho()
                     let phonemes = highlightedText.lowercaseString.characters
@@ -97,9 +98,9 @@ class PhonemesAndDotsViewController: UIViewController {
                     let bDotX : CGFloat = rect.midX - (bDotLength/2)
                     //print("bDotX =", bDotX, "rect.midX ", rect.midX)
                     
-                    let bDotY : CGFloat = 50
+                    let bDotY : CGFloat = rect.origin.y
                     self.radiusPoint.frame = CGRect(x: bDotX, y: bDotY, width: bDotLength, height: bDotLength)
-                    self.radiusPoint.backgroundColor = UIColor.randomColor()
+                    self.radiusPoint.backgroundColor = phonemesColor
                     self.radiusPoint.layer.cornerRadius = 3
                     self.radiusPoint.layer.masksToBounds = true
                     self.textView.addSubview(self.radiusPoint)
@@ -109,13 +110,17 @@ class PhonemesAndDotsViewController: UIViewController {
                     
                     //print("phonemeSnapPosition", phonemeSnapPosition)
                     let dist = self.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
-                    
+                    let increaseBy : CGFloat = 50 
+                    let newRadius = dist + increaseBy
+                    let expansionRatio = newRadius / dist
                     //print("dist",dist)
                     
                     //print( highlightedText, phonemes.count,phonemes )
                     let snapPointPhonemeLabelsArray = Array(0 ..< phonemes.count).map { letterIdx -> (CGPoint, UILabel) in
                         
-                        let phoWidth = rect.size.width / CGFloat(phonemes.count)
+                        let phoWidth = (rect.size.width / CGFloat(phonemes.count)) 
+                        let phoWidthExp = (rect.size.width / CGFloat(phonemes.count)) * expansionRatio
+
                         // Calculated mid-point
                         
                         let phoHeight = rect.size.height
@@ -127,9 +132,9 @@ class PhonemesAndDotsViewController: UIViewController {
                         
                         let snapPoint = CGPointMake( phoX, phoY)
                         
-                        let frame = CGRect(x: rect.origin.x + (rect.size.width/2), y: rect.origin.y, width: phoWidth, height: rect.size.height)
+                        let frame = CGRect(x: rect.origin.x + (rect.size.width/2), y: rect.origin.y, width: phoWidthExp, height: rect.size.height)
                         
-                        let phonemeLabel = self.createBox(frame, color: UIColor.randomColor(), text: phonemes[letterIdx],fontSize: 5.0,roundedCorners: 2,alpha: 1)
+                        let phonemeLabel = self.createBox(frame, color:phonemesColor, text: phonemes[letterIdx],fontSize: 8.0,roundedCorners: 2,alpha: 1)
                         return (snapPoint, phonemeLabel)
                         
                     }
@@ -141,77 +146,71 @@ class PhonemesAndDotsViewController: UIViewController {
                     
                     Array(0 ..< self.phonemesLabels.count)
                         .map { idx in 
-                            let getX = self.snapPoints[idx].x
-                            let getY = self.snapPoints[idx].y
                             
-                            let p0 = CGPoint(x: getX,y: getY)
+                            let pho = self.snapPoints[idx]
+                            let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
                             let p1 = self.radiusPoint.center
                             
                             let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
                           
-                            let increaseBy : CGFloat = 100 
-                            let newRadius = dist + increaseBy
+
                             let newPoint = 
                                 CGPoint(
                                     x: newRadius * cos(angle) + p1.x,
                                     y: newRadius * -sin(angle) + p1.y) 
                             
+                            //print("newPoint 1:", newPoint)
                             return UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: newPoint) 
                         }
                         .forEach { snapBehavior in
                             self.animator?.addBehavior(snapBehavior)
                     }
                     
-                    self.shapeLayer.forEach ({ line in
-                        line.removeFromSuperlayer()
-                    })
-                    
-                    self.snapPoints.enumerate().forEach { (idx, pho) in
-                        
-                        let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
-                        let p1 = self.radiusPoint.center
-                        let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
-                        //print(angle)
-                        
-                        let increaseBy : CGFloat = 100 
-                        let newRadius = dist + increaseBy
-                        
-                        let movingXby = (p0.x-p1.x)/dist
-                        let newX = p0.x + (movingXby * increaseBy)
-                        
-                        let movingYby = (p0.y-p1.y)/dist
-                        let newY = p0.y + (movingYby * increaseBy)
+//                    self.shapeLayer.forEach ({ line in
+//                        line.removeFromSuperlayer()
+//                    })
+//                    
+//                    self.snapPoints.enumerate().forEach { (idx, pho) in
+//                        
+//                        let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
+//                        let p1 = self.radiusPoint.center
+//                        let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
+//                        //print(angle)
+//                        
+//                        let increaseBy : CGFloat = 100 
+//                        let newRadius = dist + increaseBy
+//                        
+//                        let movingXby = (p0.x-p1.x)/dist
+//                        let newX = p0.x + (movingXby * increaseBy)
+//                        
+//                        let movingYby = (p0.y-p1.y)/dist
+//                        let newY = p0.y + (movingYby * increaseBy)
                         //print("moving x by ",movingXby, " moving y by ", movingYby)
                         
-                        //let newPoint = CGPoint(x: newX,y: newY) 
-                        let newPoint = 
-                            CGPoint(
-                                x: newRadius * cos(angle) + p1.x,
-                                y: newRadius * -sin(angle) + p1.y) 
-                        
-                        
-                        
-                        
-                        let path = UIBezierPath()
-                       path.moveToPoint(newPoint)
-                        
-                        //let targetPoint = 
-                        //                            CGPoint(x: p0.x + (dist/2)*cos(angle),y: p0.y + (dist/2)*sin(angle))
-                        
-                       //path.moveToPoint(targetPoint)
-                        path.addLineToPoint(p1)
-                        path.closePath() 
-                        // Create a CAShapeLayer
-                        let sLayer = CAShapeLayer()
-                        sLayer.path = path.CGPath
-                        sLayer.strokeColor = UIColor.randomColor().CGColor
-                        sLayer.fillColor = UIColor.clearColor().CGColor
-                        sLayer.lineWidth = 2.0
-                        self.textView.layer.addSublayer(sLayer)
-                        self.shapeLayer.append(sLayer)
+//                        let newPoint = CGPoint(x: newX,y: newY) 
+//                        let newPoint = 
+//                            CGPoint(
+//                                x: newRadius * cos(angle) + p1.x,
+//                                y: newRadius * -sin(angle) + p1.y) 
+                        //let newPoint = CGPoint(x: p0.x + (dist/2)*cos(angle),y: p0.y + (dist/2)*sin(angle))
+//                        print("newPoint bezier:", newPoint)
+//
+//                        
+//                        let path = UIBezierPath()
+//                        path.moveToPoint(newPoint)
+//                        path.addLineToPoint(p1)
+//                        path.closePath() 
+//                        // Create a CAShapeLayer
+//                        let sLayer = CAShapeLayer()
+//                        sLayer.path = path.CGPath
+//                        sLayer.strokeColor = UIColor.randomColor().CGColor
+//                        sLayer.fillColor = UIColor.clearColor().CGColor
+//                        sLayer.lineWidth = 2.0
+//                        self.textView.layer.addSublayer(sLayer)
+//                        self.shapeLayer.append(sLayer)
 
                         
-                    }
+//                    }
                 case .Changed: 
                     print("changed",location)
                 case .Ended: 
