@@ -15,6 +15,34 @@ button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
 
 vc.view.addSubview(button)
 
+var tickOffset = 1
+
+let timingArray = [0.1, 0.3, 0.5, 1.8, 1.0, 4.8, 0.6, 2.4, 0.2]
+
+let scanning = timingArray.toObservable()
+    .scan(0, accumulator: { acum, elem in
+        acum + elem})
+    .flatMap { delay in 
+        Observable<Int64>
+            .timer(delay, scheduler: MainScheduler.instance)
+            .map { _ in delay }
+    }
+    .subscribeNext { tick in 
+        print(tick) 
+        
+        tickOffset += 1
+        
+        let newBox = UILabel(frame: CGRect(x: (30 * tickOffset), y: 200, width: 40, height: 40))
+            newBox.backgroundColor = UIColor.redColor()
+            newBox.layer.cornerRadius = 2
+            newBox.layer.masksToBounds = true
+            
+            vc.view.addSubview(newBox)
+        
+}
+
+
+
 var state = false
 //let subscription =
 //    button.rx_tap

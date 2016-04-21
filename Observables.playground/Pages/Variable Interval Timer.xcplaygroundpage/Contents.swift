@@ -15,27 +15,30 @@ ticker
 
 let timingArray = [0.1, 0.3, 0.5, 1.8, 1.0, 4.8, 0.6, 2.4, 0.2]
 
-//let scanning = timingArray.toObservable()
-//.scan(0, accumulator: { acum, elem in
-//        acum + elem})
-//.flatMap { delay in 
-//        Observable<Int64>
-//            .timer(delay, scheduler: MainScheduler.instance)
-//            .map { _ in delay }
-//}
-//.subscribeNext { tick in print(tick) }
-
-
-
-
-timingArray.toObservable()
+let scanning = timingArray.toObservable()
+.scan(0, accumulator: { acum, elem in
+        acum + elem})
 .flatMap { delay in 
-    Observable<Int64>
-        .timer(delay, scheduler: MainScheduler.instance)
-        .map { _ in delay }
+        Observable<Int64>
+            .timer(delay, scheduler: MainScheduler.instance)
+            .map { _ in delay }
 }
-.subscribeNext { print($0) }
+.subscribeNext { tick in 
+    print(tick) 
 
+}
+
+
+
+
+//timingArray.toObservable()
+//.flatMap { delay in 
+//    Observable<Int64>
+//        .timer(delay, scheduler: MainScheduler.instance)
+//        .map { _ in delay }
+//}
+//.subscribeNext { print($0) }
+//
 
 
 // Chaining Observables
