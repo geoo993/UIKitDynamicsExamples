@@ -108,9 +108,11 @@ class TextviewViewController: UIViewController {
                     
                     let snapPoint = CGPointMake( phoX, self.textViewY-phoHeight + (rect.size.height/2))
                     
-                    let frame = CGRect(x: rect.origin.x + self.textViewX + (rect.size.width/2), y: self.textViewY, width: phoWidth, height: rect.size.height)
+                    let frame = CGRect(x: rect.origin.x + (rect.size.width/2), y: rect.origin.y, width: phoWidth, height: rect.size.height)
                     let phonemeLabel = self.createBox(frame, color: UIColor.randomColor(), text: phonemes[letterIdx])
-                        return (snapPoint, phonemeLabel)                                    
+                        return (snapPoint, phonemeLabel)
+                    
+                    
                 }
                 
                 self.snapPoints = snapPointPhonemeLabelsArray.map { point, label in return point }
@@ -121,6 +123,11 @@ class TextviewViewController: UIViewController {
                 .forEach { snapBehavior in
                      self.animator?.addBehavior(snapBehavior)
                 }
+                
+                let uiview = UIView(frame: CGRect(x: 0, y: 100, width: 10, height: 10))
+                uiview.backgroundColor = UIColor.randomColor()
+                self.textView.addSubview(uiview)
+                
 //                                for pho in 0 ..< self.phonemesLabels.count {
 //                                    
 //                                    self.snapBehavior = UISnapBehavior(item: self.phonemesLabels[pho], snapToPoint: self.snapPoints[pho])

@@ -7,5 +7,7 @@
         <page name='StructAndClassDifference'/>
         <page name='word'/>
         <page name='UITextView'/>
+        <page name='DrawPath'/>
+        <page name='Radial Explosion'/>
     </pages>
 </playground>

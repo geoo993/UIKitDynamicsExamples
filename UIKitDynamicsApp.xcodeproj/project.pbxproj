@@ -32,6 +32,7 @@
 		C72BC11C1CC1232A0012BDFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72BC11B1CC1232A0012BDFC /* ViewController.swift */; };
 		C75BC07C1CC3C09800C2E5C4 /* TextviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75BC07B1CC3C09800C2E5C4 /* TextviewViewController.swift */; };
 		C78C5D031CBFB54200DC359C /* GesturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78C5D021CBFB54200DC359C /* GesturesViewController.swift */; };
+		C795A2DF1CC8A285001307FE /* PhonemesAndDotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C795A2DE1CC8A285001307FE /* PhonemesAndDotsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -257,6 +258,7 @@
 		C75BC07B1CC3C09800C2E5C4 /* TextviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextviewViewController.swift; sourceTree = "<group>"; };
 		C78C5CF01CBF954200DC359C /* Observables.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Observables.playground; sourceTree = "<group>"; };
 		C78C5D021CBFB54200DC359C /* GesturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GesturesViewController.swift; sourceTree = "<group>"; };
+		C795A2DE1CC8A285001307FE /* PhonemesAndDotsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonemesAndDotsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +299,7 @@
 				C75BC07B1CC3C09800C2E5C4 /* TextviewViewController.swift */,
 				C72BC1191CC118890012BDFC /* NavigationViewController.swift */,
 				C72BC11B1CC1232A0012BDFC /* ViewController.swift */,
+				C795A2DE1CC8A285001307FE /* PhonemesAndDotsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -734,6 +737,7 @@
 				C72BC11A1CC118890012BDFC /* NavigationViewController.swift in Sources */,
 				C75BC07C1CC3C09800C2E5C4 /* TextviewViewController.swift in Sources */,
 				C78C5D031CBFB54200DC359C /* GesturesViewController.swift in Sources */,
+				C795A2DF1CC8A285001307FE /* PhonemesAndDotsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
