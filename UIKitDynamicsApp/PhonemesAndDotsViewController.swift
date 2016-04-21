@@ -93,7 +93,10 @@ class PhonemesAndDotsViewController: UIViewController {
                     }  
                     
                     let bDotLength : CGFloat = 10
-                    let bDotX : CGFloat = rect.origin.x + (rect.size.width*0.5) - (bDotLength/2)
+                    //let bDotX : CGFloat = rect.origin.x + (rect.size.width*0.5) - (bDotLength/2)
+                    let bDotX : CGFloat = rect.midX - (bDotLength/2)
+                    //print("bDotX =", bDotX, "rect.midX ", rect.midX)
+                    
                     let bDotY : CGFloat = 50
                     self.radiusPoint.frame = CGRect(x: bDotX, y: bDotY, width: bDotLength, height: bDotLength)
                     self.radiusPoint.backgroundColor = UIColor.randomColor()
@@ -101,9 +104,13 @@ class PhonemesAndDotsViewController: UIViewController {
                     self.radiusPoint.layer.masksToBounds = true
                     self.textView.addSubview(self.radiusPoint)
                     
-                    let dist = self.distanceBetween(self.radiusPoint.center, p2: CGPoint(x: rect.origin.x, y: rect.origin.y - (self.textView.bounds.size.height/2)))
+                    let phonemeSnapPosition = 
+                        CGPoint(x: rect.origin.x, y: rect.origin.y - (self.textView.bounds.size.height/2))
                     
-                    print("dist",dist)
+                    //print("phonemeSnapPosition", phonemeSnapPosition)
+                    let dist = self.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
+                    
+                    //print("dist",dist)
                     
                     //print( highlightedText, phonemes.count,phonemes )
                     let snapPointPhonemeLabelsArray = Array(0 ..< phonemes.count).map { letterIdx -> (CGPoint, UILabel) in
@@ -133,7 +140,24 @@ class PhonemesAndDotsViewController: UIViewController {
                     //print(self.snapPoints.map { $0 }, self.phonemesLabels.map{ $0.center })
                     
                     Array(0 ..< self.phonemesLabels.count)
-                        .map { idx in UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: self.snapPoints[idx]) }
+                        .map { idx in 
+                            let getX = self.snapPoints[idx].x
+                            let getY = self.snapPoints[idx].y
+                            
+                            let p0 = CGPoint(x: getX,y: getY)
+                            let p1 = self.radiusPoint.center
+                            
+                            let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
+                          
+                            let increaseBy : CGFloat = 100 
+                            let newRadius = dist + increaseBy
+                            let newPoint = 
+                                CGPoint(
+                                    x: newRadius * cos(angle) + p1.x,
+                                    y: newRadius * -sin(angle) + p1.y) 
+                            
+                            return UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: newPoint) 
+                        }
                         .forEach { snapBehavior in
                             self.animator?.addBehavior(snapBehavior)
                     }
@@ -142,34 +166,41 @@ class PhonemesAndDotsViewController: UIViewController {
                         line.removeFromSuperlayer()
                     })
                     
-                    
-                    
-                    self.snapPoints.forEach ({ pho in
+                    self.snapPoints.enumerate().forEach { (idx, pho) in
                         
                         let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
                         let p1 = self.radiusPoint.center
-                        let angle = self.pointPairToBearingDegrees(p0,endingPoint: p1)
+                        let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
                         //print(angle)
                         
-                        let increaseBy : CGFloat = 20 
+                        let increaseBy : CGFloat = 100 
+                        let newRadius = dist + increaseBy
+                        
                         let movingXby = (p0.x-p1.x)/dist
                         let newX = p0.x + (movingXby * increaseBy)
                         
                         let movingYby = (p0.y-p1.y)/dist
                         let newY = p0.y + (movingYby * increaseBy)
+                        //print("moving x by ",movingXby, " moving y by ", movingYby)
                         
-                        print("moving x by ",movingXby, " moving y by ", movingYby)
+                        //let newPoint = CGPoint(x: newX,y: newY) 
+                        let newPoint = 
+                            CGPoint(
+                                x: newRadius * cos(angle) + p1.x,
+                                y: newRadius * -sin(angle) + p1.y) 
+                        
+                        
                         
                         
                         let path = UIBezierPath()
-                         //path.moveToPoint(CGPoint(x: newX,y: newY))
-                        let targetPoint = 
-                            CGPoint(x: p0.x + (dist/2)*cos(angle),y: p0.y + (dist/2)*sin(angle))
-                       path.moveToPoint(targetPoint)
-                        //path.moveToPoint(CGPoint(x: dist * cos(angle) + p0.x , y: dist * sin(angle) + p0.y ))
+                       path.moveToPoint(newPoint)
+                        
+                        //let targetPoint = 
+                        //                            CGPoint(x: p0.x + (dist/2)*cos(angle),y: p0.y + (dist/2)*sin(angle))
+                        
+                       //path.moveToPoint(targetPoint)
                         path.addLineToPoint(p1)
                         path.closePath() 
-                        
                         // Create a CAShapeLayer
                         let sLayer = CAShapeLayer()
                         sLayer.path = path.CGPath
@@ -178,8 +209,9 @@ class PhonemesAndDotsViewController: UIViewController {
                         sLayer.lineWidth = 2.0
                         self.textView.layer.addSublayer(sLayer)
                         self.shapeLayer.append(sLayer)
-                    })
-                   
+
+                        
+                    }
                 case .Changed: 
                     print("changed",location)
                 case .Ended: 
@@ -253,6 +285,12 @@ class PhonemesAndDotsViewController: UIViewController {
         return bearingDegrees
     }
     
-    
+    func pointPairToBearingRadians(startingPoint: CGPoint, endingPoint:CGPoint) -> CGFloat
+    {
+        let originPoint = CGPoint(x: endingPoint.x - startingPoint.x, y: endingPoint.y - startingPoint.y) // get origin point to origin by subtracting end from start
+        let bearingRadians : Float = atan2f(Float(originPoint.y), Float(originPoint.x)) // get bearing in radians
+        
+        return CGFloat(bearingRadians)
+    }
     
 }
