@@ -20,16 +20,26 @@ class TextviewViewController: UIViewController {
     var lbl = UILabel()
     var shadowLayer: CALayer = CALayer()
     
-    let startX : CGFloat = 40
+    let textViewX : CGFloat = 40
+    let textViewY : CGFloat = 300
+    
+    var textView : UITextView!
+    
+    var phonemesLabels = [UILabel]()
+    
+    var animator:UIDynamicAnimator? = nil
+    var snapBehavior: UISnapBehavior!
+    var snapPoints = [CGPoint]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+         self.animator = UIDynamicAnimator(referenceView:self.view);
        // print("text view")
         self.view.backgroundColor = UIColor.randomColor()
         
-        let textView = UITextView(frame: CGRect(x: startX, y: 300, width: 300, height: 50))
+        self.textView = UITextView(frame: CGRect(x: textViewX, y: textViewY, width: 300, height: 50))
+        textView.clipsToBounds = false
         let str = "Hi George, Welcome Home"
         textView.text = str
         textView.font = textView.font?.fontWithSize(fontsize)
@@ -42,75 +52,124 @@ class TextviewViewController: UIViewController {
         let longPressGesture = UILongPressGestureRecognizer()
         longPressGesture.minimumPressDuration = 0.0
         
-        longPressGesture.rx_event
-            .subscribeNext { tap in 
+        longPressGesture
+        .rx_event
+        .subscribeNext { tap in 
+            
+            let location = tap.locationInView(self.textView)
+            //let text = tap.view as? UITextView
+            
+            switch tap.state {
+            case .Began: 
                 
-                let location = tap.locationInView(textView)
-                //let text = tap.view as? UITextView
+                //self.searchData(self.words[Int.random(0, max: self.words.count-1)], textview: textView)
                 
-                switch tap.state {
-                case .Began: 
-                    
-                    //self.searchData(self.words[Int.random(0, max: self.words.count-1)], textview: textView)
-                    
-                    ////part1
-                    //textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: textView.textContainer)
-                             
-                    // character index at tap location
-                    //let characterIndex = textView.layoutManager.characterIndexForPoint(location, inTextContainer: textView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+                ////part1
+                //textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: textView.textContainer)
+                         
+                // character index at tap location
+                //let characterIndex = textView.layoutManager.characterIndexForPoint(location, inTextContainer: textView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
 
-                    
-                    if let textPosition = textView.closestPositionToPoint(location) {
-                    
-                        if let wordRange = textView.tokenizer.rangeEnclosingPosition(textPosition, withGranularity: UITextGranularity.Word, inDirection: 0) {
-                            
-                            let highlightedText = textView.textInRange(wordRange)
-                            
-                            let rect = textView.firstRectForRange(wordRange)
-                            print("word rect", rect, highlightedText)
-                            
-                            self.searchData(highlightedText!,frame:rect, textview: textView)
-                        
-                        }
-                        
-                    }
-                    
-                    //let charIdx = str.characters.startIndex.advancedBy(characterIndex)
-                    //print(charIdx, str.characters[charIdx])
-                    
-                   
-                    //if index is valid then do something.
-                    //if characterIndex < text!.textStorage.length {
-                        
-                        // do the stuff
-                        
-                        // print the character index
-                        //print("character index: \(characterIndex)")
-                        
-                        // print the character at the index
-                        //let myRange = NSRange(location: characterIndex, length: 1)
-                        //let substring = (text!.attributedText.string as NSString).substringWithRange(myRange)
-                        //print("character at index: \(substring)")
-                        
-                        
-                        //var range : NSRange? = NSMakeRange(0, 1)
-                        //let attributes: [NSObject : AnyObject] = textView.textStorage.attributesAtIndex(characterIndex, effectiveRange: &range!)
-                        //print("object is \(attributes), \(NSStringFromRange(range!))")
-                        
-                        
-                   // }
+                guard let textPosition = self.textView.closestPositionToPoint(location),
+                    let wordRange = self.textView.tokenizer.rangeEnclosingPosition(textPosition, withGranularity: UITextGranularity.Word, inDirection: 0),
+                    let highlightedText = self.textView.textInRange(wordRange) else { return }
+                                            
+                let rect = self.textView.firstRectForRange(wordRange)
+                print("word rect", rect, highlightedText)
                 
-                  
-                //print("began",location)
-                case .Changed: 
-                    print("changed",location)
-                case .Ended: 
-                    print("ended",location)
-                default:
-                    print("tapp ")
+                self.searchData(highlightedText,frame:rect, textview: self.textView)
+            
+                
+                
+                self.phonemesLabels.forEach ({ pho in
+                    pho.removeFromSuperview()
+                })
+                            
+                let wordModel = WordModel()
+                wordModel.getPho()
+                let phonemes = highlightedText.lowercaseString.characters
+                    .map { letter -> String in
+                        return String(letter)
+                    }
+                    .map { letter in
+                        return wordModel.chosenLetter[letter]![Int.random(0, max: (wordModel.chosenLetter[letter]!.count)-1)]
+                    }                 
+                //print( highlightedText, phonemes.count,phonemes )
+                let snapPointPhonemeLabelsArray = Array(0 ..< phonemes.count).map { letterIdx -> (CGPoint, UILabel) in
+                    
+                    let phoWidth = rect.size.width / CGFloat(phonemes.count)
+                    // Calculated mid-point
+                    let phoX = 
+                        ((self.textViewX + rect.origin.x ) + 
+                        (CGFloat(letterIdx) * phoWidth)) + 
+                        0.5 * phoWidth // Add midpoint offset
+                    
+                    let phoHeight = rect.size.height
+                    
+                    let snapPoint = CGPointMake( phoX, self.textViewY-phoHeight + (rect.size.height/2))
+                    
+                    let frame = CGRect(x: rect.origin.x + self.textViewX + (rect.size.width/2), y: self.textViewY, width: phoWidth, height: rect.size.height)
+                    let phonemeLabel = self.createBox(frame, color: UIColor.randomColor(), text: phonemes[letterIdx])
+                        return (snapPoint, phonemeLabel)                                    
                 }
-            }.addDisposableTo(disposeBag)
-        textView.addGestureRecognizer(longPressGesture)
+                
+                self.snapPoints = snapPointPhonemeLabelsArray.map { point, label in return point }
+                self.phonemesLabels = snapPointPhonemeLabelsArray.map { point, label in return label }
+                
+                Array(0 ..< self.phonemesLabels.count)
+                .map { idx in UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: self.snapPoints[idx]) }
+                .forEach { snapBehavior in
+                     self.animator?.addBehavior(snapBehavior)
+                }
+//                                for pho in 0 ..< self.phonemesLabels.count {
+//                                    
+//                                    self.snapBehavior = UISnapBehavior(item: self.phonemesLabels[pho], snapToPoint: self.snapPoints[pho])
+//                                    self.animator?.addBehavior(self.snapBehavior)
+//                                    
+//                                    //print("first snap pos",self.phonemesLabels[pho].center)
+//                                }
+                           // print("after added something",self.phonemesLabels.count, "snap added", self.snapPoints.count)
+//                            }
+//                        }
+//                        
+//                    }
+//                    
+                //let charIdx = str.characters.startIndex.advancedBy(characterIndex)
+                //print(charIdx, str.characters[charIdx])
+                
+               
+                //if index is valid then do something.
+                //if characterIndex < text!.textStorage.length {
+                    
+                    // do the stuff
+                    
+                    // print the character index
+                    //print("character index: \(characterIndex)")
+                    
+                    // print the character at the index
+                    //let myRange = NSRange(location: characterIndex, length: 1)
+                    //let substring = (text!.attributedText.string as NSString).substringWithRange(myRange)
+                    //print("character at index: \(substring)")
+                    
+                    
+                    //var range : NSRange? = NSMakeRange(0, 1)
+                    //let attributes: [NSObject : AnyObject] = textView.textStorage.attributesAtIndex(characterIndex, effectiveRange: &range!)
+                    //print("object is \(attributes), \(NSStringFromRange(range!))")
+                    
+                    
+               // }
+            
+              
+            //print("began",location)
+            case .Changed: 
+                print("changed",location)
+            case .Ended: 
+                print("ended",location)
+            default:
+                print("tapp ")
+            }
+        }.addDisposableTo(disposeBag)
+    textView.addGestureRecognizer(longPressGesture)
     }
         
 
@@ -172,8 +231,8 @@ class TextviewViewController: UIViewController {
                 /** Label */
                 self.lbl.removeFromSuperview()
                 self.lbl = UILabel(frame: CGRectMake(rect.origin.x, rect.origin.y-5, rect.size.width, rect.size.height+10))
-                self.lbl.alpha = 0.1
-                self.lbl.font = UIFont(name: "Helvetica", size: self.fontsize-5)
+                self.lbl.alpha = 0.5
+                self.lbl.font = UIFont(name: "Helvetica", size: self.fontsize-2)
                 self.lbl.textColor = UIColor.blackColor()
                 self.lbl.text = mutableAttributedString.attributedSubstringFromRange(match.range).string
                 self.lbl.backgroundColor = UIColor.clearColor()
@@ -204,6 +263,21 @@ class TextviewViewController: UIViewController {
     
     }
     
+    func createBox(frame: CGRect, color: UIColor, text: String) -> UILabel {
+        
+        let newBox = UILabel()
+        newBox.frame = frame
+        newBox.backgroundColor = color
+        newBox.textColor = UIColor.blackColor()
+        newBox.textAlignment = .Center        
+        newBox.text = text
+        newBox.font = newBox.font.fontWithSize(5.0)
+        newBox.layer.cornerRadius = 2
+        newBox.layer.masksToBounds = true
+        
+        self.textView.addSubview(newBox)
+        return newBox
+    }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         //NSLog("Starting gravity")
