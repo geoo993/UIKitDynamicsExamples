@@ -56,18 +56,46 @@ class PhonemesAndDotsViewController: UIViewController {
         self.animator = UIDynamicAnimator(referenceView:textView)
         
         
+        let phonemesColor = UIColor.randomColor()
+        
         let longPressGesture = UILongPressGestureRecognizer()
         longPressGesture.minimumPressDuration = 0.0
         
         longPressGesture
             .rx_event
+//            .doOnNext { tap in
+//                
+//                let location = tap.locationInView(self.textView)
+//                //let text = tap.view as? UITextView
+//                
+//                switch tap.state {
+//                case .Began: 
+//                    
+//                    guard let textPosition = self.textView.closestPositionToPoint(location),
+//                        let wordRange = self.textView.tokenizer.rangeEnclosingPosition(textPosition, withGranularity: UITextGranularity.Word, inDirection: 0),
+//                        let highlightedText = self.textView.textInRange(wordRange) else { return }
+//                    
+//                    let rect = self.textView.firstRectForRange(wordRange)
+//                    //print("word rect", rect, highlightedText)
+//                    
+//                    
+//                    print("began", location)
+//                case .Changed: 
+//                    print("changed",location)
+//                case .Ended: 
+//                    print("ended",location)
+//                default:
+//                    print("tap ")
+//                }
+//            }
             .subscribeNext { tap in 
                 
                 let location = tap.locationInView(self.textView)
-                //let text = tap.view as? UITextView
+                let text = tap.view as? UITextView
                 
                 switch tap.state {
                 case .Began: 
+                    
                     
                     guard let textPosition = self.textView.closestPositionToPoint(location),
                         let wordRange = self.textView.tokenizer.rangeEnclosingPosition(textPosition, withGranularity: UITextGranularity.Word, inDirection: 0),
@@ -76,13 +104,14 @@ class PhonemesAndDotsViewController: UIViewController {
                     let rect = self.textView.firstRectForRange(wordRange)
                     //print("word rect", rect, highlightedText)
                     
+                    
+                    
                     self.highlightWord(rect,inTextView: self.textView,word: highlightedText)
                     
                     self.phonemesLabels.forEach ({ pho in
                         pho.removeFromSuperview()
                     })
                     
-                    let phonemesColor = UIColor.randomColor()
                     let wordModel = WordModel()
                     wordModel.getPho()
                     let phonemes = highlightedText.lowercaseString.characters
@@ -97,8 +126,7 @@ class PhonemesAndDotsViewController: UIViewController {
                     //let bDotX : CGFloat = rect.origin.x + (rect.size.width*0.5) - (bDotLength/2)
                     let bDotX : CGFloat = rect.midX - (bDotLength/2)
                     //print("bDotX =", bDotX, "rect.midX ", rect.midX)
-                    
-                    let bDotY : CGFloat = rect.origin.y
+                    let bDotY : CGFloat = (rect.origin.y + (bDotLength/2)) + 50
                     self.radiusPoint.frame = CGRect(x: bDotX, y: bDotY, width: bDotLength, height: bDotLength)
                     self.radiusPoint.backgroundColor = phonemesColor
                     self.radiusPoint.layer.cornerRadius = 3
@@ -110,7 +138,7 @@ class PhonemesAndDotsViewController: UIViewController {
                     
                     //print("phonemeSnapPosition", phonemeSnapPosition)
                     let dist = self.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
-                    let increaseBy : CGFloat = 50 
+                    let increaseBy : CGFloat = 40 
                     let newRadius = dist + increaseBy
                     let expansionRatio = newRadius / dist
                     //print("dist",dist)
@@ -122,7 +150,6 @@ class PhonemesAndDotsViewController: UIViewController {
                         let phoWidthExp = (rect.size.width / CGFloat(phonemes.count)) * expansionRatio
 
                         // Calculated mid-point
-                        
                         let phoHeight = rect.size.height
                         let phoX = 
                             ((self.textViewX + rect.origin.x ) + 
@@ -153,7 +180,6 @@ class PhonemesAndDotsViewController: UIViewController {
                             
                             let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
                           
-
                             let newPoint = 
                                 CGPoint(
                                     x: newRadius * cos(angle) + p1.x,
@@ -164,7 +190,9 @@ class PhonemesAndDotsViewController: UIViewController {
                         }
                         .forEach { snapBehavior in
                             self.animator?.addBehavior(snapBehavior)
-                    }
+                        }
+                    
+                    
                     
 //                    self.shapeLayer.forEach ({ line in
 //                        line.removeFromSuperlayer()
@@ -227,8 +255,11 @@ class PhonemesAndDotsViewController: UIViewController {
         
         /** Add Shadow */
         // self.shadowLayer.removeFromSuperlayer()
+        let frame = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
         
-        self.shadowLayer.frame = CGRectMake(rect.origin.x, rect.origin.y-5, rect.size.width, rect.size.height+10)
+        //print(rect.origin,self.label.frame.origin)
+        
+        self.shadowLayer.frame = frame
         self.shadowLayer.cornerRadius = 5
         self.shadowLayer.backgroundColor = UIColor.yellowColor().CGColor
         self.shadowLayer.shadowColor = UIColor.blackColor().CGColor
@@ -238,9 +269,9 @@ class PhonemesAndDotsViewController: UIViewController {
         
         /** Label */
         self.label.removeFromSuperview()
-        let frame = CGRectMake(rect.origin.x, rect.origin.y-5, rect.size.width, rect.size.height+10)
-        self.label = createBox(frame, color: UIColor.clearColor(), text: word, fontSize: self.fontsize-2, roundedCorners: 10,alpha: 0.5)
-        
+        self.label = createBox(frame, color: UIColor.clearColor(), text: word, fontSize: self.fontsize-2, roundedCorners: 8,alpha: 0.5)
+    
+       
         //inTextView.layer.addSublayer(self.shadowLayer)
     }
     

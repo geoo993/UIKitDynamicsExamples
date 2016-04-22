@@ -30,6 +30,7 @@
 		C71F7DF81CB80D3F009211CC /* RxBlocking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C71F7DD61CB80C03009211CC /* RxBlocking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C72BC11A1CC118890012BDFC /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72BC1191CC118890012BDFC /* NavigationViewController.swift */; };
 		C72BC11C1CC1232A0012BDFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72BC11B1CC1232A0012BDFC /* ViewController.swift */; };
+		C73C0A591CCA0A8B00097479 /* PhonemesThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73C0A581CCA0A8B00097479 /* PhonemesThirdViewController.swift */; };
 		C75BC07C1CC3C09800C2E5C4 /* TextviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75BC07B1CC3C09800C2E5C4 /* TextviewViewController.swift */; };
 		C78C5D031CBFB54200DC359C /* GesturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78C5D021CBFB54200DC359C /* GesturesViewController.swift */; };
 		C795A2DF1CC8A285001307FE /* PhonemesAndDotsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C795A2DE1CC8A285001307FE /* PhonemesAndDotsViewController.swift */; };
@@ -255,6 +256,7 @@
 		C71F7DEE1CB80C34009211CC /* PhonicsTextExplosion.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PhonicsTextExplosion.playground; sourceTree = "<group>"; };
 		C72BC1191CC118890012BDFC /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		C72BC11B1CC1232A0012BDFC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C73C0A581CCA0A8B00097479 /* PhonemesThirdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhonemesThirdViewController.swift; sourceTree = "<group>"; };
 		C75BC07B1CC3C09800C2E5C4 /* TextviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextviewViewController.swift; sourceTree = "<group>"; };
 		C78C5CF01CBF954200DC359C /* Observables.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Observables.playground; sourceTree = "<group>"; };
 		C78C5D021CBFB54200DC359C /* GesturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GesturesViewController.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				C72BC1191CC118890012BDFC /* NavigationViewController.swift */,
 				C72BC11B1CC1232A0012BDFC /* ViewController.swift */,
 				C795A2DE1CC8A285001307FE /* PhonemesAndDotsViewController.swift */,
+				C73C0A581CCA0A8B00097479 /* PhonemesThirdViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				C75BC07C1CC3C09800C2E5C4 /* TextviewViewController.swift in Sources */,
 				C78C5D031CBFB54200DC359C /* GesturesViewController.swift in Sources */,
 				C795A2DF1CC8A285001307FE /* PhonemesAndDotsViewController.swift in Sources */,
+				C73C0A591CCA0A8B00097479 /* PhonemesThirdViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
