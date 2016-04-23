@@ -137,7 +137,7 @@ class PhonemesAndDotsViewController: UIViewController {
                         CGPoint(x: rect.origin.x, y: rect.origin.y - (self.textView.bounds.size.height/2))
                     
                     //print("phonemeSnapPosition", phonemeSnapPosition)
-                    let dist = self.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
+                    let dist = CGFloat.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
                     let increaseBy : CGFloat = 40 
                     let newRadius = dist + increaseBy
                     let expansionRatio = newRadius / dist
@@ -159,7 +159,7 @@ class PhonemesAndDotsViewController: UIViewController {
                         
                         let snapPoint = CGPointMake( phoX, phoY)
                         
-                        let frame = CGRect(x: rect.origin.x + (rect.size.width/2), y: rect.origin.y, width: phoWidthExp, height: rect.size.height)
+                        let frame = CGRect(x: rect.midX , y: rect.midY, width: phoWidthExp, height: rect.size.height)
                         
                         let phonemeLabel = self.createBox(frame, color:phonemesColor, text: phonemes[letterIdx],fontSize: 8.0,roundedCorners: 2,alpha: 1)
                         return (snapPoint, phonemeLabel)
@@ -172,25 +172,25 @@ class PhonemesAndDotsViewController: UIViewController {
                     //print(self.snapPoints.map { $0 }, self.phonemesLabels.map{ $0.center })
                     
                     Array(0 ..< self.phonemesLabels.count)
-                        .map { idx in 
-                            
-                            let pho = self.snapPoints[idx]
-                            let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
-                            let p1 = self.radiusPoint.center
-                            
-                            let angle = self.pointPairToBearingRadians(p0,endingPoint: p1)
-                          
-                            let newPoint = 
-                                CGPoint(
-                                    x: newRadius * cos(angle) + p1.x,
-                                    y: newRadius * -sin(angle) + p1.y) 
-                            
-                            //print("newPoint 1:", newPoint)
-                            return UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: newPoint) 
-                        }
-                        .forEach { snapBehavior in
-                            self.animator?.addBehavior(snapBehavior)
-                        }
+                    .map { idx in 
+                        
+                        let pho = self.snapPoints[idx]
+                        let p0 = CGPoint(x: pho.x-self.textViewX,y: pho.y-self.textViewY)
+                        let p1 = self.radiusPoint.center
+                        
+                        let angle = CGFloat.pointPairToBearingRadians(p0,endingPoint: p1)
+                      
+                        let newPoint = 
+                            CGPoint(
+                                x: newRadius * cos(angle) + p1.x,
+                                y: newRadius * -sin(angle) + p1.y) 
+                        
+                        //print("newPoint 1:", newPoint)
+                        return UISnapBehavior(item: self.phonemesLabels[idx], snapToPoint: newPoint) 
+                    }
+                    .forEach { snapBehavior in
+                        self.animator?.addBehavior(snapBehavior)
+                    }
                     
                     
                     
@@ -300,27 +300,6 @@ class PhonemesAndDotsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func distanceBetween(p1 : CGPoint, p2 : CGPoint) -> CGFloat {
-        let dx : CGFloat = p1.x - p2.x
-        let dy : CGFloat = p1.y - p2.y
-        return sqrt(dx * dx + dy * dy)
-    }
-    func pointPairToBearingDegrees(startingPoint: CGPoint, endingPoint:CGPoint) -> CGFloat
-    {
-        let originPoint = CGPointMake(endingPoint.x - startingPoint.x, endingPoint.y - startingPoint.y) // get origin point to origin by subtracting end from start
-        let bearingRadians : Float = atan2f(Float(originPoint.y), Float(originPoint.x)) // get bearing in radians
-        var bearingDegrees : CGFloat = CGFloat(bearingRadians) * CGFloat(180.0 / M_PI) // convert to degrees
-        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)) // correct discontinuity
-        return bearingDegrees
-    }
-    
-    func pointPairToBearingRadians(startingPoint: CGPoint, endingPoint:CGPoint) -> CGFloat
-    {
-        let originPoint = CGPoint(x: endingPoint.x - startingPoint.x, y: endingPoint.y - startingPoint.y) // get origin point to origin by subtracting end from start
-        let bearingRadians : Float = atan2f(Float(originPoint.y), Float(originPoint.x)) // get bearing in radians
-        
-        return CGFloat(bearingRadians)
-    }
+   
     
 }

@@ -85,7 +85,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     }
                 //print("two")
                 case 3:
-                    if let phoTextView = self.storyboard?.instantiateViewControllerWithIdentifier("TextviewViewController") {
+                    if let phoTextView = self.storyboard?.instantiateViewControllerWithIdentifier("PhonemesThirdViewController") {
                         self.navigationController?.pushViewController(phoTextView, animated: true)
                     }
                 // print("three")

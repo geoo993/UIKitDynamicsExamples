@@ -17,8 +17,30 @@ extension Int {
     }
     
 }
-
+extension Double {
+    
+    public static func random(min: Double, max: Double) -> Double {
+        
+        let rand = Double(arc4random()) / Double(UINT32_MAX)
+        let minimum = min < max ? min : max 
+        return  rand * abs(min - max) + minimum
+    }
+    
+    public static func roundToPlaces(value:Double, places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return round(value * divisor) / divisor
+    }
+    
+    
+    
+}
 extension CGFloat {
+    
+    public static func roundToPlaces(value:CGFloat, places:Int) -> CGFloat {
+        let divisor = pow(10.0, CGFloat(places))
+        return round(value * divisor) / divisor
+    }
+    
     
     public static func random(min: CGFloat, max: CGFloat) -> CGFloat {
         
@@ -58,6 +80,24 @@ extension CGFloat {
         return angleDegrees
     }
 
+    public static func pointPairToBearingDegrees(startingPoint: CGPoint, endingPoint:CGPoint) -> CGFloat
+    {
+        let originPoint = CGPointMake(endingPoint.x - startingPoint.x, endingPoint.y - startingPoint.y) // get origin point to origin by subtracting end from start
+        let bearingRadians : Float = atan2f(Float(originPoint.y), Float(originPoint.x)) // get bearing in radians
+        var bearingDegrees : CGFloat = CGFloat(bearingRadians) * CGFloat(180.0 / M_PI) // convert to degrees
+        bearingDegrees = (bearingDegrees > 0.0 ? bearingDegrees : (360.0 + bearingDegrees)) // correct discontinuity
+        return bearingDegrees
+    }
+    
+    public static func pointPairToBearingRadians(startingPoint: CGPoint, endingPoint:CGPoint) -> CGFloat
+    {
+        let originPoint = CGPoint(x: endingPoint.x - startingPoint.x, y: endingPoint.y - startingPoint.y) // get origin point to origin by subtracting end from start
+        let bearingRadians : Float = atan2f(Float(originPoint.y), Float(-originPoint.x)) // get bearing in radians
+        
+        return CGFloat(bearingRadians)
+    }
+    
+    
     public static func rotateToward(shapePos:CGPoint, rotateTo: CGPoint) -> CGFloat
     {
 //        //type1
