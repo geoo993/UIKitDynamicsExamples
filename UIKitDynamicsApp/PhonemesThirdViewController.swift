@@ -10,16 +10,18 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import AVFoundation
 
 class PhonemesThirdViewController: UIViewController {
     
+    let speech = AVSpeechSynthesizer()
     let disposeBag = DisposeBag()
     
     var label = UILabel()
     var shadowLayer: CALayer = CALayer()
     
     var fontsize : CGFloat = 20
-    let textViewX : CGFloat = 40
+    let textViewX : CGFloat = 10
     let textViewY : CGFloat = 300
     
     var textView : UITextView!
@@ -41,6 +43,10 @@ class PhonemesThirdViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.randomColor()
+        
+        let t = UIView(frame: CGRect(x: textViewX, y: 80, width: 300, height: 20))
+        self.view.addSubview(t)
+        
         
         let text = "Biff got the eggs, she put them in the box. The hens ran up. Chip fed Them."
         let textSize : Int = text.characters.count
@@ -89,7 +95,8 @@ class PhonemesThirdViewController: UIViewController {
                             
                             let bDotLength : CGFloat = 10
                             let bDotX : CGFloat = rect.midX - (bDotLength/2)
-                            let bDotY : CGFloat = self.textView.bounds.size.height
+                            let bDotY : CGFloat = (rect.origin.y + (bDotLength/2)) + self.textView.bounds.size.height
+                            
                             self.addRadiusPoint(CGRect(x: bDotX, y: bDotY, width: bDotLength, height: bDotLength),color: phonemesColor)
                             
                             return true
@@ -138,6 +145,9 @@ class PhonemesThirdViewController: UIViewController {
                                     return wordModel.chosenLetter[letter]![Int.random(0, max: (wordModel.chosenLetter[letter]!.count)-1)]
                             }  
                             
+                            // say word
+                            let utt = AVSpeechUtterance(string: highlightedText)
+                            self.speech.speakUtterance(utt)
                             //print("truee ....", phonemes)
                         }
                         
@@ -153,7 +163,7 @@ class PhonemesThirdViewController: UIViewController {
                             CGPoint(x: rect.origin.x, y: rect.origin.y - (self.textView.bounds.size.height/2))
                         
                         let dist = CGFloat.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
-                        let increaseBy : CGFloat = 40 
+                        let increaseBy : CGFloat = 20 + rect.size.width
                         let newRadius = dist + increaseBy
                         let expansionRatio = newRadius / dist
                         
@@ -217,6 +227,8 @@ class PhonemesThirdViewController: UIViewController {
                             let snapBehavior =  UISnapBehavior(item: allPho[self.tickIndex], snapToPoint: newPoint) 
                             self.animator?.addBehavior(snapBehavior)
                            
+                            let phoSpeech = AVSpeechUtterance(string: allPho[self.tickIndex].text!)
+                            self.speech.speakUtterance(phoSpeech)
                                 
                             self.tickIndex += 1
                             //print(self.tickIndex)

@@ -65,7 +65,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func animteWithDuratio(rows:Int)
     {
-        UIView.animateWithDuration(0.5) { 
+        //UIView.animateWithDuration(0.5) { 
             
             switch (rows)
             {
@@ -102,7 +102,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
  
             
             
-        }
+       // }
     }
     
     override func didReceiveMemoryWarning() {

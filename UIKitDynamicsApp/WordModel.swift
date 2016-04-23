@@ -43,18 +43,18 @@ extension String {
         
         return randomConsonant
     }
+   
     
-    func words() -> [String] {
-        
-        let range = Range<String.Index>(start: self.startIndex, end: self.endIndex)
-        var words = [String]()
-        
-        self.enumerateSubstringsInRange(range, options: NSStringEnumerationOptions.ByWords) { (substring, _, _, _) -> () in
-            words.append(substring!)
+    public static func wordList(word:String) -> [String]
+    {
+        var wordArr = [String]()
+        word.enumerateSubstringsInRange(word.startIndex..<word.endIndex, options: .ByWords) { 
+            ss, r, r2, stop in
+            wordArr.append(ss!)
         }
-        
-        return words
+        return wordArr
     }
+    
 }
 
 

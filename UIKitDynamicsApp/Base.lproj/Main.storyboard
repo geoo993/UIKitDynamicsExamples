@@ -91,42 +91,6 @@
             </objects>
             <point key="canvasLocation" x="1200" y="1079"/>
         </scene>
-        <!--Phonemes And Dots ViewController-->
-        <scene sceneID="Nm1-D3-5yK">
-            <objects>
-                <viewController id="HaR-gD-VWf" userLabel="Phonemes And Dots ViewController" customClass="PhonemesAndDotsViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XXt-cl-Koq"/>
-                        <viewControllerLayoutGuide type="bottom" id="aIK-U6-Y52"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YW2-rh-5Ds">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kbG-fI-n6Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1988" y="1062"/>
-        </scene>
-        <!--Phonemes Third View Controller-->
-        <scene sceneID="re1-dh-MZq">
-            <objects>
-                <viewController storyboardIdentifier="PhonemesThirdViewController" id="gah-qU-213" customClass="PhonemesThirdViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ZDK-ez-P9f"/>
-                        <viewControllerLayoutGuide type="bottom" id="I6g-cX-igt"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SZE-7m-DD9">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lrh-q6-OAN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2058" y="1821"/>
-        </scene>
         <!--Snapping View Controller-->
         <scene sceneID="zWU-wV-3Rs">
             <objects>
@@ -145,10 +109,10 @@
             </objects>
             <point key="canvasLocation" x="1126" y="293"/>
         </scene>
-        <!--Textview View Controller-->
+        <!--Phonemes Third View Controller-->
         <scene sceneID="iGw-Zj-uQN">
             <objects>
-                <viewController storyboardIdentifier="TextviewViewController" id="hAS-fO-uDD" customClass="TextviewViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhonemesThirdViewController" id="hAS-fO-uDD" customClass="PhonemesThirdViewController" customModule="UIKitDynamicsApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i3s-vF-DCL"/>
                         <viewControllerLayoutGuide type="bottom" id="eo5-rB-jIU"/>

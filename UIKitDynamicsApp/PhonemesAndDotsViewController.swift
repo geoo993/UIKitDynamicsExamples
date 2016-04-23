@@ -40,10 +40,10 @@ class PhonemesAndDotsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        
         // print("text view")
         self.view.backgroundColor = UIColor.randomColor()
+        
+        
         
         self.textView = UITextView(frame: CGRect(x: textViewX, y: textViewY, width: 300, height: 40))
         textView.clipsToBounds = false
@@ -126,7 +126,8 @@ class PhonemesAndDotsViewController: UIViewController {
                     //let bDotX : CGFloat = rect.origin.x + (rect.size.width*0.5) - (bDotLength/2)
                     let bDotX : CGFloat = rect.midX - (bDotLength/2)
                     //print("bDotX =", bDotX, "rect.midX ", rect.midX)
-                    let bDotY : CGFloat = (rect.origin.y + (bDotLength/2)) + 50
+                    let bDotY : CGFloat = (rect.origin.y + (bDotLength/2)) + self.textView.bounds.size.height
+                    
                     self.radiusPoint.frame = CGRect(x: bDotX, y: bDotY, width: bDotLength, height: bDotLength)
                     self.radiusPoint.backgroundColor = phonemesColor
                     self.radiusPoint.layer.cornerRadius = 3
@@ -138,7 +139,7 @@ class PhonemesAndDotsViewController: UIViewController {
                     
                     //print("phonemeSnapPosition", phonemeSnapPosition)
                     let dist = CGFloat.distanceBetween(self.radiusPoint.center, p2: phonemeSnapPosition)
-                    let increaseBy : CGFloat = 40 
+                    let increaseBy : CGFloat = 20 + rect.size.width
                     let newRadius = dist + increaseBy
                     let expansionRatio = newRadius / dist
                     //print("dist",dist)
