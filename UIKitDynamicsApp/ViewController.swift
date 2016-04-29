@@ -15,13 +15,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet var tableView: UITableView? = UITableView()
     
-   // @IBOutlet var tableView: UITableView!
-    
+
     var items: [String] = ["Push Behavior", "Snap Behavior", "Phonemes","Phonemes in TextView", "Main Gestures"]
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        tableView!.reloadData()
+        //tableView!.reloadData()
     }
     
     override func viewDidLoad() {
@@ -31,8 +30,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.tableView!.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
      
         
-        tableView!.delegate = self
-        tableView!.dataSource = self
+        //tableView!.delegate = self
+        //tableView!.dataSource = self
     }
   
     

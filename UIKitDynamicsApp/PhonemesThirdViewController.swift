@@ -192,9 +192,11 @@ class PhonemesThirdViewController: UIViewController {
                     }
                     .subscribeNext{ (snapPoints, allPho, radius) in
                         
+                    
                         Array(0 ..< allPho.count).map { idx -> Double in 
                             
                             allPho[idx].hidden = true
+                            allPho[idx].tag = idx
                             let timeDelays = Double.roundToPlaces(Double.random(0.0, max: 1.0),places: 1)
                             //print(timeDelays)
                             
@@ -227,16 +229,18 @@ class PhonemesThirdViewController: UIViewController {
                             let snapBehavior =  UISnapBehavior(item: allPho[self.tickIndex], snapToPoint: newPoint) 
                             self.animator?.addBehavior(snapBehavior)
                            
-                            let phoSpeech = AVSpeechUtterance(string: allPho[self.tickIndex].text!)
-                            self.speech.speakUtterance(phoSpeech)
+                            //let phoSpeech = AVSpeechUtterance(string: allPho[self.tickIndex].text!)
+                            //self.speech.speakUtterance(phoSpeech)
                                 
                             self.tickIndex += 1
+                            
                             //print(self.tickIndex)
                         }.addDisposableTo(self.disposeBag)
-                
+                        
                     }.addDisposableTo(self.disposeBag)
                     //print("began", location)
                 case .Ended: 
+                    
                     print("ended", location)
                 default:
                     print("tap ")
@@ -245,8 +249,10 @@ class PhonemesThirdViewController: UIViewController {
         textView.addGestureRecognizer(longPressGesture)
         
         
+        
+        
     }
-    
+   
     func createBox(frame: CGRect, color: UIColor, text: String, fontSize: CGFloat, roundedCorners: CGFloat,alpha:CGFloat) -> UILabel {
         
         let newBox = UILabel()

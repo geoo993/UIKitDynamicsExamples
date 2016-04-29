@@ -34,6 +34,7 @@ longPressGesture.rx_event
         case .Began: 
             
             
+            
             textView.layoutManager.boundingRectForGlyphRange (NSRange(location: 6, length: 12), inTextContainer: textView.textContainer)
             
             let point = CGPoint(x: 60, y: 5)
