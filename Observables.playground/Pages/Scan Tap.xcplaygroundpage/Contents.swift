@@ -27,6 +27,9 @@ let scanning = timingArray.toObservable()
             .timer(delay, scheduler: MainScheduler.instance)
             .map { _ in delay }
     }
+    
+    
+
     .subscribeNext { tick in 
         print(tick) 
         
