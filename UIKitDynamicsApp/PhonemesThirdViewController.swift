@@ -48,7 +48,7 @@ class PhonemesThirdViewController: UIViewController {
         self.view.addSubview(t)
         
         
-        let text = "Biff got the eggs, she put them in the box. The hens ran up. Chip fed Them."
+        let text = "Biff got the eggs, she put them in the box. The hens ran up and Chip fed Them."
         let textSize : Int = text.characters.count
         self.textView = UITextView(frame: CGRect(x: textViewX, y: textViewY, width: 300, height: CGFloat(textSize + 10)))
         textView.clipsToBounds = false
